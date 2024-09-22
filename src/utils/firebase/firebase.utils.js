@@ -3,6 +3,8 @@ import {
     getAuth,
     GoogleAuthProvider,
     signInWithPopup,
+    signOut,
+    onAuthStateChanged,
 } from "firebase/auth";
 
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
@@ -18,14 +20,13 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-export const auth = getAuth();
+export const auth = getAuth(firebaseApp);
 
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
     prompt: "select_account"
 });
 
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 
 const db = getFirestore();
 
@@ -53,4 +54,8 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     return userDocRef;
 }
 
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signOutUser = async () => signOut(auth);
+
+export const onAuthStateChangedListener = (user) => onAuthStateChanged(auth, user)
 
