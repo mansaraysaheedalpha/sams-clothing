@@ -24,9 +24,8 @@ const SignInForm = () => {
 
         try {
             if (!email || !password) return;
-            const { user } = await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(auth, email, password);
 
-            console.log("User successfully signed in with email and password" + user);
         } catch (error) {
             if (error.code === 'auth/wrong-password') {
                 alert("incorrect password");
