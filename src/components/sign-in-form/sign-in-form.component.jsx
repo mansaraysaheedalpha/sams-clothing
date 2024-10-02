@@ -13,6 +13,7 @@ const signUpFormFields = {
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(signUpFormFields);
     const { email, password } = formFields;
+    const [isSignIn, setIsSigningIn] = useState(false)
 
     const changeHandler = (event) => {
         const { name, value } = event.target
@@ -35,13 +36,18 @@ const SignInForm = () => {
         }
 
         setFormFields(signUpFormFields);
-    }
+    };
 
-    const logGoogle = async () => {
+    const signInWithGoogle = async () => {
+        if (isSignIn) return;
+
+        setIsSigningIn(true);
         try {
             await signInWithGooglePopup();
         } catch (error) {
             console.error("Error signing in with Google:", error.message);
+        } finally {
+            setIsSigningIn(false);
         }
     }
     return (
@@ -55,12 +61,11 @@ const SignInForm = () => {
 
                     <div className='buttons-container'>
                         <Button type="submit">Sign In</Button >
-                        <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={logGoogle}>Google Sign In</Button>
+                        <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>Google Sign In</Button>
                     </div>
                 </form>
             </div>
         </div>
     );
 };
-
 export default SignInForm;
